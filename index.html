@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novalyze AI — Agentes de Inteligencia Artificial</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --gray-1: #1a1a1a;
+    --gray-2: #2a2a2a;
+    --gray-3: #555;
+    --gray-4: #999;
+    --accent: #e8ff47;
+    --accent-dim: rgba(232,255,71,0.12);
+    --border: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { color: var(--gray-4); text-decoration: none; font-size: 13px; letter-spacing: 0.05em; transition: color .2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: var(--black);
+    padding: 9px 22px; border-radius: 2px;
+    font-size: 13px; font-weight: 500; text-decoration: none;
+    letter-spacing: 0.05em; transition: opacity .2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 140px 48px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,255,71,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.92;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+    max-width: 900px;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-size: 18px; font-weight: 300;
+    color: var(--gray-4); max-width: 480px;
+    line-height: 1.7; margin-bottom: 48px;
+  }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    padding: 16px 36px; border-radius: 2px;
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    letter-spacing: 0.05em; transition: opacity .2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--gray-4);
+    padding: 15px 36px; border-radius: 2px;
+    font-size: 14px; text-decoration: none;
+    letter-spacing: 0.05em; transition: all .2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--white); color: var(--white); }
+
+  /* STATS BAR */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin: 0 48px;
+  }
+  .stat {
+    padding: 40px 48px;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; color: var(--white);
+    letter-spacing: 1px; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-lbl { font-size: 13px; color: var(--gray-4); letter-spacing: 0.05em; }
+
+  /* SECTION COMMON */
+  section { padding: 100px 48px; }
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-tag::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: var(--accent);
+  }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 0.95; letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--gray-4);
+    max-width: 520px; line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  /* AGENTS */
+  .agents { background: var(--black); }
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+  }
+  .agent-card {
+    background: var(--gray-1);
+    padding: 40px 36px;
+    border-right: 1px solid var(--border);
+    transition: background .3s;
+    position: relative; overflow: hidden;
+  }
+  .agent-card:hover { background: var(--gray-2); }
+  .agent-card.featured {
+    background: var(--gray-1);
+    border-top: 2px solid var(--accent);
+  }
+  .agent-card.featured::before {
+    content: 'ESTRELLA';
+    position: absolute; top: 16px; right: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--accent); background: var(--accent-dim);
+    padding: 3px 8px; border-radius: 2px;
+  }
+  .agent-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--gray-3);
+    margin-bottom: 24px; letter-spacing: 0.1em;
+  }
+  .agent-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; font-size: 22px;
+  }
+  .agent-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; letter-spacing: 1px;
+    margin-bottom: 12px; color: var(--white);
+  }
+  .agent-desc {
+    font-size: 14px; color: var(--gray-4);
+    line-height: 1.7; margin-bottom: 28px;
+  }
+  .agent-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .agent-tag {
+    font-size: 11px; color: var(--gray-3);
+    border: 1px solid var(--gray-2);
+    padding: 4px 10px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .agent-metric {
+    display: flex; align-items: baseline; gap: 8px;
+    padding-top: 24px; border-top: 1px solid var(--border);
+  }
+  .agent-metric-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; color: var(--accent); line-height: 1;
+  }
+  .agent-metric-lbl { font-size: 12px; color: var(--gray-4); }
+
+  /* HOW IT WORKS */
+  .how { background: var(--gray-1); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+  }
+  .step { position: relative; padding-left: 0; }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px; color: var(--gray-2);
+    line-height: 1; margin-bottom: -10px;
+    display: block;
+  }
+  .step h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 1px;
+    margin-bottom: 10px; color: var(--white);
+  }
+  .step p { font-size: 14px; color: var(--gray-4); line-height: 1.7; }
+
+  /* PRICING */
+  .pricing { background: var(--black); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px; border: 1px solid var(--border);
+  }
+  .price-card {
+    background: var(--gray-1);
+    padding: 40px 32px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .price-card.featured-price {
+    background: var(--white);
+    color: var(--black);
+  }
+  .price-tier {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 24px;
+    color: var(--gray-4);
+  }
+  .price-card.featured-price .price-tier { color: var(--gray-3); }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-card.featured-price .price-amount { color: var(--black); }
+  .price-period { font-size: 13px; color: var(--gray-4); margin-bottom: 32px; }
+  .price-card.featured-price .price-period { color: var(--gray-3); }
+  .price-features { list-style: none; margin-bottom: 36px; }
+  .price-features li {
+    font-size: 13px; color: var(--gray-4);
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .price-card.featured-price .price-features li { color: var(--gray-3); border-bottom-color: rgba(0,0,0,0.08); }
+  .price-features li::before { content: '→'; color: var(--accent); font-size: 12px; }
+  .price-card.featured-price .price-features li::before { color: var(--black); }
+  .btn-price-primary {
+    display: block; text-align: center;
+    background: var(--accent); color: var(--black);
+    padding: 14px; border-radius: 2px;
+    font-size: 13px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: opacity .2s;
+  }
+  .btn-price-primary:hover { opacity: 0.85; }
+  .btn-price-ghost {
+    display: block; text-align: center;
+    border: 1px solid var(--border); color: var(--gray-4);
+    padding: 13px; border-radius: 2px;
+    font-size: 13px; text-decoration: none;
+    letter-spacing: 0.05em; transition: all .2s;
+  }
+  .btn-price-ghost:hover { border-color: var(--white); color: var(--white); }
+
+  /* PAY PER USE */
+  .payperuse {
+    background: var(--gray-1);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 48px;
+    margin-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 32px;
+  }
+  .ppu-left h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; margin-bottom: 8px;
+  }
+  .ppu-left p { font-size: 14px; color: var(--gray-4); max-width: 420px; }
+  .ppu-items { display: flex; gap: 24px; flex-wrap: wrap; }
+  .ppu-item {
+    background: var(--gray-2); padding: 16px 24px;
+    border-radius: 2px; border: 1px solid var(--border);
+    text-align: center;
+  }
+  .ppu-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; color: var(--accent);
+  }
+  .ppu-name { font-size: 11px; color: var(--gray-4); margin-top: 4px; font-family: 'DM Mono', monospace; }
+
+  /* CONTACT */
+  .contact { background: var(--black); }
+  .contact-inner {
+    border: 1px solid var(--border);
+    padding: 72px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+  }
+  .contact h2 { margin-bottom: 16px; }
+  .contact-sub { font-size: 16px; color: var(--gray-4); line-height: 1.7; }
+  .contact-info { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--gray-4);
+  }
+  .contact-item span:first-child {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--accent); letter-spacing: 0.1em;
+    min-width: 60px;
+  }
+  form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  input, textarea, select {
+    background: var(--gray-1); border: 1px solid var(--border);
+    color: var(--white); padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    border-radius: 2px; outline: none; width: 100%;
+    transition: border-color .2s;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  input::placeholder, textarea::placeholder { color: var(--gray-3); }
+  textarea { resize: vertical; min-height: 100px; }
+  select option { background: var(--gray-1); }
+  .btn-submit {
+    background: var(--accent); color: var(--black);
+    padding: 16px; border: none; border-radius: 2px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em;
+    transition: opacity .2s;
+  }
+  .btn-submit:hover { opacity: 0.85; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer p { font-size: 12px; color: var(--gray-3); }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 3px; color: var(--gray-3);
+  }
+  .footer-logo span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-tag  { animation: fadeUp .6s ease both; }
+  h1         { animation: fadeUp .6s ease .1s both; }
+  .hero-sub  { animation: fadeUp .6s ease .2s both; }
+  .hero-actions { animation: fadeUp .6s ease .3s both; }
+
+  /* TICKER */
+  .ticker {
+    overflow: hidden; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0; background: var(--gray-1);
+  }
+  .ticker-inner {
+    display: flex; gap: 0;
+    animation: ticker 20s linear infinite;
+    width: max-content;
+  }
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: var(--gray-3); padding: 0 32px;
+    white-space: nowrap;
+  }
+  .ticker-item span { color: var(--accent); }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    section { padding: 60px 24px; }
+    .stats-bar { grid-template-columns: 1fr; margin: 0 24px; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 28px 24px; }
+    .contact-inner { grid-template-columns: 1fr; padding: 32px 24px; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 24px; }
+    .payperuse { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">NOVA<span>LYZE</span></a>
+  <ul class="nav-links">
+    <li><a href="#agentes">Agentes</a></li>
+    <li><a href="#como">Cómo funciona</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Demo gratuita</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Agencia 100% operada por IA</div>
+  <h1>TU EMPRESA,<br><em>SIN</em> LÍMITES<br>DE HORARIO</h1>
+  <p class="hero-sub">Agentes de inteligencia artificial diseñados para tu operación. Trabajan solos, 24/7, sin errores. Tú te enfocas en crecer.</p>
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">Agenda una demo →</a>
+    <a href="#agentes" class="btn-ghost">Ver agentes</a>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">ANÁLISIS EN <span>&lt;30 SEG</span></span>
+    <span class="ticker-item">DISPONIBILIDAD <span>24/7</span></span>
+    <span class="ticker-item">10X MÁS RÁPIDO QUE MANUAL</span>
+    <span class="ticker-item">CERO ERRORES DE TRANSCRIPCIÓN</span>
+    <span class="ticker-item">ROI DESDE EL PRIMER USO</span>
+    <span class="ticker-item">AGENCIA <span>100% IA</span></span>
+    <span class="ticker-item">ANÁLISIS EN <span>&lt;30 SEG</span></span>
+    <span class="ticker-item">DISPONIBILIDAD <span>24/7</span></span>
+    <span class="ticker-item">10X MÁS RÁPIDO QUE MANUAL</span>
+    <span class="ticker-item">CERO ERRORES DE TRANSCRIPCIÓN</span>
+    <span class="ticker-item">ROI DESDE EL PRIMER USO</span>
+    <span class="ticker-item">AGENCIA <span>100% IA</span></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">&lt;<span>30</span>seg</div>
+    <div class="stat-lbl">Tiempo de análisis por tarea</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>10</span>x</div>
+    <div class="stat-lbl">Más rápido que proceso manual</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>24</span>/7</div>
+    <div class="stat-lbl">Disponibilidad sin interrupciones</div>
+  </div>
+</div>
+
+<!-- AGENTS -->
+<section class="agents" id="agentes">
+  <div class="section-tag">Nuestros agentes</div>
+  <h2>IA ESPECIALIZADA<br>POR INDUSTRIA</h2>
+  <p class="section-sub">No son chatbots genéricos. Son sistemas construidos con instrucciones precisas sobre tu negocio, tus procesos y tus reglas.</p>
+  <div class="agents-grid">
+
+    <div class="agent-card featured">
+      <div class="agent-number">AGT-01</div>
+      <div class="agent-icon">🏗️</div>
+      <h3>Agente de Arquitectura</h3>
+      <p class="agent-desc">Analiza planos, genera propuestas técnicas, calcula materiales y produce reportes ejecutivos listos para presentar. De horas a segundos.</p>
+      <div class="agent-tags">
+        <span class="agent-tag">Análisis de planos</span>
+        <span class="agent-tag">Propuestas técnicas</span>
+        <span class="agent-tag">Cálculo de materiales</span>
+        <span class="agent-tag">Reportes ejecutivos</span>
+      </div>
+      <div class="agent-metric">
+        <div class="agent-metric-num">3h</div>
+        <div class="agent-metric-lbl">→ reducidas a 30 segundos</div>
+      </div>
+    </div>
+
+    <div class="agent-card featured">
+      <div class="agent-number">AGT-02</div>
+      <div class="agent-icon">📣</div>
+      <h3>Agente de Marketing</h3>
+      <p class="agent-desc">Encuentra influencers por nicho y métricas, genera listas filtradas, crea estrategias de contenido y redacta copies listos para publicar.</p>
+      <div class="agent-tags">
+        <span class="agent-tag">Búsqueda de influencers</span>
+        <span class="agent-tag">Estrategia de contenido</span>
+        <span class="agent-tag">Copywriting</span>
+        <span class="agent-tag">Análisis de métricas</span>
+      </div>
+      <div class="agent-metric">
+        <div class="agent-metric-num">100+</div>
+        <div class="agent-metric-lbl">influencers en 10 segundos</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-number">AGT-03</div>
+      <div class="agent-icon">📊</div>
+      <h3>Agente de Presupuestos</h3>
+      <p class="agent-desc">Compara cotizaciones de múltiples proveedores, identifica el mejor precio por ítem y genera un reporte en Excel descargable con ahorro calculado.</p>
+      <div class="agent-tags">
+        <span class="agent-tag">Comparación de precios</span>
+        <span class="agent-tag">Optimización de compras</span>
+        <span class="agent-tag">Export a Excel</span>
+      </div>
+      <div class="agent-metric">
+        <div class="agent-metric-num">0</div>
+        <div class="agent-metric-lbl">errores de transcripción</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PAY PER USE -->
+  <div class="payperuse">
+    <div class="ppu-left">
+      <h3>¿Solo necesitas usarlo una vez?</h3>
+      <p>Paga por uso. Sin suscripción, sin compromisos. Accede al agente que necesitas y paga solo cuando lo usas.</p>
+    </div>
+    <div class="ppu-items">
+      <div class="ppu-item">
+        <div class="ppu-price">$3.50</div>
+        <div class="ppu-name">Búsqueda influencers</div>
+      </div>
+      <div class="ppu-item">
+        <div class="ppu-price">$2.00</div>
+        <div class="ppu-name">Generación de copy</div>
+      </div>
+      <div class="ppu-item">
+        <div class="ppu-price">$1.50</div>
+        <div class="ppu-name">Cotización comparada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="como">
+  <div class="section-tag">El proceso</div>
+  <h2>EN PRODUCCIÓN<br>EN 48 HORAS</h2>
+  <p class="section-sub">Sin instalaciones. Sin configuraciones técnicas. Tu equipo lo usa desde el navegador desde el día 1.</p>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01</span>
+      <h4>Nos describes el proceso</h4>
+      <p>Cuéntanos qué tarea quieres automatizar, qué información maneja y qué resultado esperas.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <h4>Diseñamos el agente</h4>
+      <p>Construimos las instrucciones especializadas que convierten la IA en un experto de tu industria.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <h4>Desarrollamos y desplegamos</h4>
+      <p>Programamos la aplicación, la conectamos con tus herramientas y la publicamos con tu marca.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <h4>Usas desde el día 1</h4>
+      <p>Acceso desde el navegador. Sin instalaciones. ROI positivo desde el primer uso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="precios">
+  <div class="section-tag">Inversión</div>
+  <h2>PRECIOS SIMPLES.<br>SIN SORPRESAS.</h2>
+  <p class="section-sub">Una tarifa de desarrollo por el agente y una mensualidad por mantenerlo funcionando, actualizado y disponible.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$600</div>
+      <div class="price-period">desarrollo + $80/mes mantenimiento</div>
+      <ul class="price-features">
+        <li>1 agente especializado</li>
+        <li>Proceso simple o lineal</li>
+        <li>Interfaz web incluida</li>
+        <li>Soporte por WhatsApp</li>
+        <li>Updates mensuales</li>
+      </ul>
+      <a href="#contacto" class="btn-price-ghost">Solicitar demo</a>
+    </div>
+    <div class="price-card featured-price">
+      <div class="price-tier">Professional</div>
+      <div class="price-amount">$1.500</div>
+      <div class="price-period">desarrollo + $150/mes mantenimiento</div>
+      <ul class="price-features">
+        <li>1 agente con integraciones</li>
+        <li>Conectado a tus herramientas</li>
+        <li>Exportación de reportes</li>
+        <li>Panel de administración</li>
+        <li>Soporte prioritario</li>
+      </ul>
+      <a href="#contacto" class="btn-price-primary">Solicitar demo →</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount">$4.500+</div>
+      <div class="price-period">desarrollo + mensualidad a medida</div>
+      <ul class="price-features">
+        <li>Suite completa de agentes</li>
+        <li>Integraciones avanzadas</li>
+        <li>Marca blanca disponible</li>
+        <li>SLA garantizado</li>
+        <li>Gerente de cuenta dedicado</li>
+      </ul>
+      <a href="#contacto" class="btn-price-ghost">Hablar con ventas</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div>
+      <div class="section-tag">Contacto</div>
+      <h2>AGENDA TU<br>DEMO GRATIS</h2>
+      <p class="contact-sub">En menos de 48 horas te decimos si podemos automatizar tu proceso, cuánto costaría y cuánto tiempo te ahorraría.</p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span>EMAIL</span>
+          <span>hola@novalyze.lat</span>
+        </div>
+        <div class="contact-item">
+          <span>RESP.</span>
+          <span>Menos de 48 horas</span>
+        </div>
+        <div class="contact-item">
+          <span>DEMO</span>
+          <span>Sin costo ni compromiso</span>
+        </div>
+      </div>
+    </div>
+    <form onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text" placeholder="Nombre" required>
+        <input type="text" placeholder="Empresa" required>
+      </div>
+      <input type="email" placeholder="Email" required>
+      <select>
+        <option value="" disabled selected>¿Qué agente te interesa?</option>
+        <option>Agente de Arquitectura</option>
+        <option>Agente de Marketing</option>
+        <option>Agente de Presupuestos</option>
+        <option>Agente personalizado</option>
+        <option>No sé, quiero asesoría</option>
+      </select>
+      <textarea placeholder="¿Qué proceso quieres automatizar?"></textarea>
+      <button type="submit" class="btn-submit">Enviar — agenda mi demo →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NOVA<span>LYZE</span></div>
+  <p>© 2026 Novalyze AI Solutions · novalyze.lat</p>
+  <p style="font-size:11px; color: #444;">Tecnología construida sobre Claude de Anthropic</p>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = '✓ Mensaje enviado — te contactamos en 48h';
+  btn.style.background = '#1a1a1a';
+  btn.style.color = '#e8ff47';
+  btn.style.border = '1px solid #e8ff47';
+}
+
+// Smooth reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.agent-card, .step, .price-card, .stat').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
