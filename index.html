@@ -1,739 +1,378 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Novalyze AI — Agentes de Inteligencia Artificial</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Novalyze — AI-Powered Marketing Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0e0e;
+  --paper:#f4f2ed;
+  --mid:#eceae4;
+  --sage:#6a9e60;
+  --sage-light:#a8c5a0;
+  --muted:#7a7a72;
+  --border:rgba(14,14,14,0.08);
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
 
-  :root {
-    --black: #0a0a0a;
-    --white: #f5f5f0;
-    --gray-1: #1a1a1a;
-    --gray-2: #2a2a2a;
-    --gray-3: #555;
-    --gray-4: #999;
-    --accent: #e8ff47;
-    --accent-dim: rgba(232,255,71,0.12);
-    --border: rgba(255,255,255,0.08);
-  }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 56px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(244,242,237,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);text-decoration:none}
+.logo em{font-style:italic;color:var(--sage)}
+.nav-r{display:flex;align-items:center;gap:20px}
+.lang-btn{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;background:none;border:none;cursor:pointer;color:var(--muted);padding:0;transition:color .2s}
+.lang-btn:hover{color:var(--ink)}
+.lang-btn .on{color:var(--sage)}
+.nav-cta{font-size:13px;font-weight:500;color:var(--paper);background:var(--ink);padding:9px 22px;border-radius:2px;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--sage)}
 
-  html { scroll-behavior: smooth; }
+/* HERO */
+.hero{min-height:100vh;background:var(--ink);padding:0 56px;display:grid;grid-template-rows:1fr auto;padding-top:60px}
+.hero-main{display:flex;flex-direction:column;justify-content:center;padding:80px 0 60px}
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:var(--sage-light);text-transform:uppercase;margin-bottom:36px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(52px,7.5vw,108px);line-height:0.95;font-weight:700;color:var(--paper);letter-spacing:-3px;margin-bottom:0}
+.hero h1 em{font-style:italic;color:var(--sage-light)}
+.hero-foot{display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:40px 0 64px;border-top:1px solid rgba(244,242,237,0.08)}
+.hero-desc{font-size:16px;color:rgba(244,242,237,0.45);line-height:1.8;font-weight:300;max-width:420px;align-self:center}
+.hero-actions{display:flex;flex-direction:column;gap:12px;align-items:flex-end;justify-content:center}
+.btn-p{font-size:14px;font-weight:500;color:var(--paper);background:var(--sage);padding:15px 32px;border-radius:2px;text-decoration:none;transition:opacity .2s;text-align:center}
+.btn-p:hover{opacity:.85}
+.btn-s{font-size:13px;color:rgba(244,242,237,0.35);text-decoration:none;transition:color .2s;text-align:center}
+.btn-s:hover{color:rgba(244,242,237,0.7)}
 
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+/* TICKER */
+.ticker{overflow:hidden;background:var(--sage);padding:10px 0}
+.ticker-t{display:flex;width:max-content;animation:tick 30s linear infinite}
+.ti{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:rgba(244,242,237,0.6);padding:0 32px;white-space:nowrap;text-transform:uppercase}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 48px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(12px);
-  }
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--white);
-    text-decoration: none;
-  }
-  .logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a { color: var(--gray-4); text-decoration: none; font-size: 13px; letter-spacing: 0.05em; transition: color .2s; }
-  .nav-links a:hover { color: var(--white); }
-  .nav-cta {
-    background: var(--accent); color: var(--black);
-    padding: 9px 22px; border-radius: 2px;
-    font-size: 13px; font-weight: 500; text-decoration: none;
-    letter-spacing: 0.05em; transition: opacity .2s;
-  }
-  .nav-cta:hover { opacity: 0.85; }
+/* SERVICES — two big blocks */
+.services{padding:96px 56px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.svc-block{background:var(--paper);padding:64px 56px;transition:background .25s;cursor:default}
+.svc-block:hover{background:var(--mid)}
+.svc-block.dark{background:var(--ink)}
+.svc-block.dark:hover{background:#161616}
+.svc-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;margin-bottom:32px}
+.svc-block.dark .svc-label{color:rgba(244,242,237,0.3)}
+.svc-block h2{font-family:'Playfair Display',serif;font-size:clamp(32px,3.5vw,48px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;color:var(--ink);margin-bottom:24px}
+.svc-block h2 em{font-style:italic}
+.svc-block.dark h2{color:var(--paper)}
+.svc-block p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:36px;max-width:420px}
+.svc-block.dark p{color:rgba(244,242,237,0.4)}
+.svc-list{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.svc-item{font-size:14px;color:var(--ink);padding:14px 0;border-bottom:1px solid var(--border)}
+.svc-item:first-child{border-top:1px solid var(--border)}
+.svc-block.dark .svc-item{color:rgba(244,242,237,0.65);border-color:rgba(244,242,237,0.07)}
+.svc-link{font-size:13px;font-weight:500;color:var(--sage);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.svc-db{font-size:13px;color:var(--muted);line-height:1.75;margin-top:-16px;margin-bottom:28px;max-width:420px}
+.svc-link:hover{gap:14px}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 140px 48px 80px;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(232,255,71,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.15em;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 28px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero-tag::before {
-    content: ''; display: block;
-    width: 24px; height: 1px; background: var(--accent);
-  }
-  h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 10vw, 140px);
-    line-height: 0.92;
-    letter-spacing: -1px;
-    margin-bottom: 32px;
-    max-width: 900px;
-  }
-  h1 em { color: var(--accent); font-style: normal; }
-  .hero-sub {
-    font-size: 18px; font-weight: 300;
-    color: var(--gray-4); max-width: 480px;
-    line-height: 1.7; margin-bottom: 48px;
-  }
-  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--accent); color: var(--black);
-    padding: 16px 36px; border-radius: 2px;
-    font-size: 14px; font-weight: 500; text-decoration: none;
-    letter-spacing: 0.05em; transition: opacity .2s;
-    display: inline-block;
-  }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-ghost {
-    border: 1px solid var(--border); color: var(--gray-4);
-    padding: 15px 36px; border-radius: 2px;
-    font-size: 14px; text-decoration: none;
-    letter-spacing: 0.05em; transition: all .2s;
-    display: inline-block;
-  }
-  .btn-ghost:hover { border-color: var(--white); color: var(--white); }
+/* NUMBERS */
+.numbers{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+.num-item{padding:48px 40px;border-right:1px solid var(--border)}
+.num-item:last-child{border-right:none}
+.num-n{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;line-height:1;letter-spacing:-2px;color:var(--ink);margin-bottom:8px}
+.num-n em{font-style:normal;color:var(--sage)}
+.num-l{font-size:13px;color:var(--muted);line-height:1.5}
 
-  /* STATS BAR */
-  .stats-bar {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    margin: 0 48px;
-  }
-  .stat {
-    padding: 40px 48px;
-    border-right: 1px solid var(--border);
-  }
-  .stat:last-child { border-right: none; }
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px; color: var(--white);
-    letter-spacing: 1px; line-height: 1;
-    margin-bottom: 6px;
-  }
-  .stat-num span { color: var(--accent); }
-  .stat-lbl { font-size: 13px; color: var(--gray-4); letter-spacing: 0.05em; }
+/* WORK — 3 columns, minimal */
+.work{padding:96px 56px;background:var(--mid)}
+.work-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:64px;align-items:end}
+.work-head h2{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,54px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;color:var(--ink)}
+.work-head h2 em{font-style:italic}
+.work-head p{font-size:15px;color:var(--muted);line-height:1.8}
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(14,14,14,0.06)}
+.case{background:var(--mid);padding:40px 32px;transition:background .2s}
+.case:hover{background:var(--paper)}
+.case-cat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--sage);text-transform:uppercase;margin-bottom:20px}
+.case h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;letter-spacing:-0.3px;color:var(--ink);margin-bottom:10px}
+.case p{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:24px}
+.case-big{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;letter-spacing:-2px;color:var(--ink)}
+.case-big em{font-style:normal;color:var(--sage)}
+.case-big small{display:block;font-family:'Inter',sans-serif;font-size:12px;font-weight:300;color:var(--muted);letter-spacing:0;margin-top:4px}
 
-  /* SECTION COMMON */
-  section { padding: 100px 48px; }
-  .section-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.15em;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-tag::before {
-    content: ''; display: block;
-    width: 24px; height: 1px; background: var(--accent);
-  }
-  h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(42px, 6vw, 72px);
-    line-height: 0.95; letter-spacing: 0.5px;
-    margin-bottom: 16px;
-  }
-  .section-sub {
-    font-size: 16px; color: var(--gray-4);
-    max-width: 520px; line-height: 1.7;
-    margin-bottom: 60px;
-  }
+/* CONTACT */
+.contact{background:var(--ink);padding:96px 56px}
+.contact-in{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
+.contact-l h2{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,54px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;color:var(--paper);margin-bottom:20px}
+.contact-l h2 em{font-style:italic;color:var(--sage-light)}
+.contact-l p{font-size:15px;color:rgba(244,242,237,0.4);line-height:1.8;margin-bottom:44px}
+.c-rows{display:flex;flex-direction:column;gap:16px}
+.c-row{display:flex;gap:20px;align-items:baseline}
+.c-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--sage-light);text-transform:uppercase;min-width:64px}
+.c-val{font-size:14px;color:rgba(244,242,237,0.4)}
+form{display:flex;flex-direction:column;gap:12px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,textarea,select{background:rgba(244,242,237,0.05);border:1px solid rgba(244,242,237,0.1);color:var(--paper);padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:300;border-radius:2px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none}
+input:focus,textarea:focus,select:focus{border-color:var(--sage)}
+input::placeholder,textarea::placeholder{color:rgba(244,242,237,0.2)}
+select option{background:var(--ink);color:var(--paper)}
+textarea{resize:vertical;min-height:90px}
+.btn-sub{background:var(--paper);color:var(--ink);padding:15px;border:none;border-radius:2px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;width:100%}
+.btn-sub:hover{background:var(--sage);color:var(--paper)}
+.btn-sub:disabled{opacity:.5;cursor:not-allowed}
 
-  /* AGENTS */
-  .agents { background: var(--black); }
-  .agents-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1px;
-    border: 1px solid var(--border);
-  }
-  .agent-card {
-    background: var(--gray-1);
-    padding: 40px 36px;
-    border-right: 1px solid var(--border);
-    transition: background .3s;
-    position: relative; overflow: hidden;
-  }
-  .agent-card:hover { background: var(--gray-2); }
-  .agent-card.featured {
-    background: var(--gray-1);
-    border-top: 2px solid var(--accent);
-  }
-  .agent-card.featured::before {
-    content: 'ESTRELLA';
-    position: absolute; top: 16px; right: 20px;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; letter-spacing: 0.15em;
-    color: var(--accent); background: var(--accent-dim);
-    padding: 3px 8px; border-radius: 2px;
-  }
-  .agent-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; color: var(--gray-3);
-    margin-bottom: 24px; letter-spacing: 0.1em;
-  }
-  .agent-icon {
-    width: 48px; height: 48px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px; font-size: 22px;
-  }
-  .agent-card h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px; letter-spacing: 1px;
-    margin-bottom: 12px; color: var(--white);
-  }
-  .agent-desc {
-    font-size: 14px; color: var(--gray-4);
-    line-height: 1.7; margin-bottom: 28px;
-  }
-  .agent-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
-  .agent-tag {
-    font-size: 11px; color: var(--gray-3);
-    border: 1px solid var(--gray-2);
-    padding: 4px 10px; border-radius: 2px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.05em;
-  }
-  .agent-metric {
-    display: flex; align-items: baseline; gap: 8px;
-    padding-top: 24px; border-top: 1px solid var(--border);
-  }
-  .agent-metric-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px; color: var(--accent); line-height: 1;
-  }
-  .agent-metric-lbl { font-size: 12px; color: var(--gray-4); }
+/* FOOTER */
+footer{background:var(--ink);padding:28px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(244,242,237,0.06)}
+.f-logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:rgba(244,242,237,0.2)}
+.f-logo em{font-style:italic;color:var(--sage)}
+footer p{font-size:12px;color:rgba(244,242,237,0.2)}
+.f-nav{display:flex;gap:24px}
+.f-nav a{font-size:12px;color:rgba(244,242,237,0.25);text-decoration:none;transition:color .2s}
+.f-nav a:hover{color:rgba(244,242,237,.55)}
 
-  /* HOW IT WORKS */
-  .how { background: var(--gray-1); }
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-  }
-  .step { position: relative; padding-left: 0; }
-  .step-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 80px; color: var(--gray-2);
-    line-height: 1; margin-bottom: -10px;
-    display: block;
-  }
-  .step h4 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px; letter-spacing: 1px;
-    margin-bottom: 10px; color: var(--white);
-  }
-  .step p { font-size: 14px; color: var(--gray-4); line-height: 1.7; }
+.toast{position:fixed;bottom:28px;right:28px;background:var(--paper);color:var(--ink);padding:14px 22px;border-radius:2px;font-size:13px;z-index:999;display:none;border-left:3px solid var(--sage)}
 
-  /* PRICING */
-  .pricing { background: var(--black); }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1px; border: 1px solid var(--border);
-  }
-  .price-card {
-    background: var(--gray-1);
-    padding: 40px 32px;
-    border-right: 1px solid var(--border);
-    position: relative;
-  }
-  .price-card.featured-price {
-    background: var(--white);
-    color: var(--black);
-  }
-  .price-tier {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.15em;
-    text-transform: uppercase; margin-bottom: 24px;
-    color: var(--gray-4);
-  }
-  .price-card.featured-price .price-tier { color: var(--gray-3); }
-  .price-amount {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px; line-height: 1;
-    margin-bottom: 4px;
-  }
-  .price-card.featured-price .price-amount { color: var(--black); }
-  .price-period { font-size: 13px; color: var(--gray-4); margin-bottom: 32px; }
-  .price-card.featured-price .price-period { color: var(--gray-3); }
-  .price-features { list-style: none; margin-bottom: 36px; }
-  .price-features li {
-    font-size: 13px; color: var(--gray-4);
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .price-card.featured-price .price-features li { color: var(--gray-3); border-bottom-color: rgba(0,0,0,0.08); }
-  .price-features li::before { content: '→'; color: var(--accent); font-size: 12px; }
-  .price-card.featured-price .price-features li::before { color: var(--black); }
-  .btn-price-primary {
-    display: block; text-align: center;
-    background: var(--accent); color: var(--black);
-    padding: 14px; border-radius: 2px;
-    font-size: 13px; font-weight: 500;
-    text-decoration: none; letter-spacing: 0.05em;
-    transition: opacity .2s;
-  }
-  .btn-price-primary:hover { opacity: 0.85; }
-  .btn-price-ghost {
-    display: block; text-align: center;
-    border: 1px solid var(--border); color: var(--gray-4);
-    padding: 13px; border-radius: 2px;
-    font-size: 13px; text-decoration: none;
-    letter-spacing: 0.05em; transition: all .2s;
-  }
-  .btn-price-ghost:hover { border-color: var(--white); color: var(--white); }
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero-kicker{animation:fu .5s ease both}
+.hero h1{animation:fu .5s ease .1s both}
+.hero-foot{animation:fu .5s ease .2s both}
 
-  /* PAY PER USE */
-  .payperuse {
-    background: var(--gray-1);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 48px;
-    margin-top: 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 32px;
-  }
-  .ppu-left h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px; margin-bottom: 8px;
-  }
-  .ppu-left p { font-size: 14px; color: var(--gray-4); max-width: 420px; }
-  .ppu-items { display: flex; gap: 24px; flex-wrap: wrap; }
-  .ppu-item {
-    background: var(--gray-2); padding: 16px 24px;
-    border-radius: 2px; border: 1px solid var(--border);
-    text-align: center;
-  }
-  .ppu-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px; color: var(--accent);
-  }
-  .ppu-name { font-size: 11px; color: var(--gray-4); margin-top: 4px; font-family: 'DM Mono', monospace; }
-
-  /* CONTACT */
-  .contact { background: var(--black); }
-  .contact-inner {
-    border: 1px solid var(--border);
-    padding: 72px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: start;
-  }
-  .contact h2 { margin-bottom: 16px; }
-  .contact-sub { font-size: 16px; color: var(--gray-4); line-height: 1.7; }
-  .contact-info { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
-  .contact-item {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 14px; color: var(--gray-4);
-  }
-  .contact-item span:first-child {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    color: var(--accent); letter-spacing: 0.1em;
-    min-width: 60px;
-  }
-  form { display: flex; flex-direction: column; gap: 16px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  input, textarea, select {
-    background: var(--gray-1); border: 1px solid var(--border);
-    color: var(--white); padding: 14px 16px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px;
-    border-radius: 2px; outline: none; width: 100%;
-    transition: border-color .2s;
-  }
-  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-  input::placeholder, textarea::placeholder { color: var(--gray-3); }
-  textarea { resize: vertical; min-height: 100px; }
-  select option { background: var(--gray-1); }
-  .btn-submit {
-    background: var(--accent); color: var(--black);
-    padding: 16px; border: none; border-radius: 2px;
-    font-size: 14px; font-weight: 500; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em;
-    transition: opacity .2s;
-  }
-  .btn-submit:hover { opacity: 0.85; }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 32px 48px;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 16px;
-  }
-  footer p { font-size: 12px; color: var(--gray-3); }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px; letter-spacing: 3px; color: var(--gray-3);
-  }
-  .footer-logo span { color: var(--accent); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .hero-tag  { animation: fadeUp .6s ease both; }
-  h1         { animation: fadeUp .6s ease .1s both; }
-  .hero-sub  { animation: fadeUp .6s ease .2s both; }
-  .hero-actions { animation: fadeUp .6s ease .3s both; }
-
-  /* TICKER */
-  .ticker {
-    overflow: hidden; border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0; background: var(--gray-1);
-  }
-  .ticker-inner {
-    display: flex; gap: 0;
-    animation: ticker 20s linear infinite;
-    width: max-content;
-  }
-  .ticker-item {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.1em;
-    color: var(--gray-3); padding: 0 32px;
-    white-space: nowrap;
-  }
-  .ticker-item span { color: var(--accent); }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 120px 24px 60px; }
-    section { padding: 60px 24px; }
-    .stats-bar { grid-template-columns: 1fr; margin: 0 24px; }
-    .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 28px 24px; }
-    .contact-inner { grid-template-columns: 1fr; padding: 32px 24px; gap: 40px; }
-    .form-row { grid-template-columns: 1fr; }
-    footer { padding: 24px; }
-    .payperuse { padding: 28px 24px; }
-  }
+@media(max-width:860px){
+  nav{padding:0 24px}
+  .hero,.services,.work,.contact,footer{padding-left:24px;padding-right:24px}
+  .hero h1{letter-spacing:-1px}
+  .hero-foot{grid-template-columns:1fr}
+  .hero-actions{align-items:flex-start}
+  .services{grid-template-columns:1fr;padding:0}
+  .svc-block{padding:48px 24px}
+  .numbers{grid-template-columns:1fr 1fr}
+  .num-item{padding:32px 24px}
+  .work-head{grid-template-columns:1fr}
+  .work-head h2{margin-bottom:16px}
+  .cases{grid-template-columns:1fr}
+  .contact-in{grid-template-columns:1fr;gap:48px}
+  .fr{grid-template-columns:1fr}
+  footer{padding:24px;flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">NOVA<span>LYZE</span></a>
-  <ul class="nav-links">
-    <li><a href="#agentes">Agentes</a></li>
-    <li><a href="#como">Cómo funciona</a></li>
-    <li><a href="#precios">Precios</a></li>
-    <li><a href="#contacto">Contacto</a></li>
-  </ul>
-  <a href="#contacto" class="nav-cta">Demo gratuita</a>
+  <a href="#" class="logo">Nova<em>lyze</em></a>
+  <div class="nav-r">
+    <button class="lang-btn" onclick="toggleLang()" id="langBtn"><span class="on">EN</span> / ES</button>
+    <a href="#contact" class="nav-cta" data-en="Get a proposal" data-es="Solicitar propuesta">Get a proposal</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-tag">Agencia 100% operada por IA</div>
-  <h1>TU EMPRESA,<br><em>SIN</em> LÍMITES<br>DE HORARIO</h1>
-  <p class="hero-sub">Agentes de inteligencia artificial diseñados para tu operación. Trabajan solos, 24/7, sin errores. Tú te enfocas en crecer.</p>
-  <div class="hero-actions">
-    <a href="#contacto" class="btn-primary">Agenda una demo →</a>
-    <a href="#agentes" class="btn-ghost">Ver agentes</a>
+  <div class="hero-main">
+    <div class="hero-kicker" data-en="An integrated content & AI agency" data-es="Una agencia integrada de contenido e IA">An integrated content & AI agency</div>
+    <h1 data-en="We grow brands<br>with <em>real talent</em><br>and AI <em>precision.</em>" data-es="Hacemos crecer marcas<br>con <em>talento real</em><br>y <em>precisión</em> IA.">We grow brands<br>with <em>real talent</em><br>and AI <em>precision.</em></h1>
+  </div>
+  <div class="hero-foot">
+    <p class="hero-desc" data-en="Top-agency experience. Proprietary AI technology. Results that larger agencies charge ten times more to deliver." data-es="Experiencia de agencias top. Tecnología AI propia. Resultados que agencias más grandes cobran diez veces más por entregar.">Top-agency experience. Proprietary AI technology. Results that larger agencies charge ten times more to deliver.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-p" data-en="Let's talk about your brand →" data-es="Hablemos de tu marca →">Let's talk about your brand →</a>
+      <a href="#services" class="btn-s" data-en="See what we do ↓" data-es="Ver lo que hacemos ↓">See what we do ↓</a>
+    </div>
   </div>
 </section>
 
 <!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">ANÁLISIS EN <span>&lt;30 SEG</span></span>
-    <span class="ticker-item">DISPONIBILIDAD <span>24/7</span></span>
-    <span class="ticker-item">10X MÁS RÁPIDO QUE MANUAL</span>
-    <span class="ticker-item">CERO ERRORES DE TRANSCRIPCIÓN</span>
-    <span class="ticker-item">ROI DESDE EL PRIMER USO</span>
-    <span class="ticker-item">AGENCIA <span>100% IA</span></span>
-    <span class="ticker-item">ANÁLISIS EN <span>&lt;30 SEG</span></span>
-    <span class="ticker-item">DISPONIBILIDAD <span>24/7</span></span>
-    <span class="ticker-item">10X MÁS RÁPIDO QUE MANUAL</span>
-    <span class="ticker-item">CERO ERRORES DE TRANSCRIPCIÓN</span>
-    <span class="ticker-item">ROI DESDE EL PRIMER USO</span>
-    <span class="ticker-item">AGENCIA <span>100% IA</span></span>
+  <div class="ticker-t">
+    <span class="ti">Influencer Marketing</span><span class="ti">·</span>
+    <span class="ti">Social Media</span><span class="ti">·</span>
+    <span class="ti">UGC Content</span><span class="ti">·</span>
+    <span class="ti">AI Agents</span><span class="ti">·</span>
+    <span class="ti">LATAM Markets</span><span class="ti">·</span>
+    <span class="ti">Brand Strategy</span><span class="ti">·</span>
+    <span class="ti">Influencer Marketing</span><span class="ti">·</span>
+    <span class="ti">Social Media</span><span class="ti">·</span>
+    <span class="ti">UGC Content</span><span class="ti">·</span>
+    <span class="ti">AI Agents</span><span class="ti">·</span>
+    <span class="ti">LATAM Markets</span><span class="ti">·</span>
+    <span class="ti">Brand Strategy</span><span class="ti">·</span>
   </div>
 </div>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat">
-    <div class="stat-num">&lt;<span>30</span>seg</div>
-    <div class="stat-lbl">Tiempo de análisis por tarea</div>
+<!-- NUMBERS -->
+<div class="numbers">
+  <div class="num-item">
+    <div class="num-n">50<em>+</em></div>
+    <div class="num-l" data-en="Influencer campaigns managed" data-es="Campañas de influencers gestionadas">Influencer campaigns managed</div>
   </div>
-  <div class="stat">
-    <div class="stat-num"><span>10</span>x</div>
-    <div class="stat-lbl">Más rápido que proceso manual</div>
+  <div class="num-item">
+    <div class="num-n">3<em>x</em></div>
+    <div class="num-l" data-en="Faster than traditional agencies" data-es="Más rápido que agencias tradicionales">Faster than traditional agencies</div>
   </div>
-  <div class="stat">
-    <div class="stat-num"><span>24</span>/7</div>
-    <div class="stat-lbl">Disponibilidad sin interrupciones</div>
+  <div class="num-item">
+    <div class="num-n">US<em>A</em></div>
+    <div class="num-l" data-en="& LATAM markets covered" data-es="& mercados LATAM cubiertos">& LATAM markets covered</div>
+  </div>
+  <div class="num-item">
+    <div class="num-n">24<em>/7</em></div>
+    <div class="num-l" data-en="AI agents running for you" data-es="Agentes AI trabajando para ti">AI agents running for you</div>
   </div>
 </div>
 
-<!-- AGENTS -->
-<section class="agents" id="agentes">
-  <div class="section-tag">Nuestros agentes</div>
-  <h2>IA ESPECIALIZADA<br>POR INDUSTRIA</h2>
-  <p class="section-sub">No son chatbots genéricos. Son sistemas construidos con instrucciones precisas sobre tu negocio, tus procesos y tus reglas.</p>
-  <div class="agents-grid">
-
-    <div class="agent-card featured">
-      <div class="agent-number">AGT-01</div>
-      <div class="agent-icon">🏗️</div>
-      <h3>Agente de Arquitectura</h3>
-      <p class="agent-desc">Analiza planos, genera propuestas técnicas, calcula materiales y produce reportes ejecutivos listos para presentar. De horas a segundos.</p>
-      <div class="agent-tags">
-        <span class="agent-tag">Análisis de planos</span>
-        <span class="agent-tag">Propuestas técnicas</span>
-        <span class="agent-tag">Cálculo de materiales</span>
-        <span class="agent-tag">Reportes ejecutivos</span>
-      </div>
-      <div class="agent-metric">
-        <div class="agent-metric-num">3h</div>
-        <div class="agent-metric-lbl">→ reducidas a 30 segundos</div>
-      </div>
-      <a href="#contacto" style="display:block;margin-top:20px;text-align:center;padding:10px;border:1px solid rgba(232,255,71,0.3);color:#e8ff47;font-size:12px;text-decoration:none;border-radius:2px;font-family:'DM Mono',monospace;letter-spacing:0.1em;transition:all .2s" onmouseover="this.style.background='rgba(232,255,71,0.08)'" onmouseout="this.style.background='transparent'">SOLICITAR DEMO →</a>
+<!-- SERVICES -->
+<div class="services" id="services">
+  <div class="svc-block">
+    <div class="svc-label" data-en="Marketing services" data-es="Servicios de marketing">Marketing services</div>
+    <h2 data-en="Content &<br><em>Influence</em>" data-es="Contenido<br>e <em>Influencia</em>">Content &<br><em>Influence</em></h2>
+    <p data-en="Agency-quality marketing at a fraction of the cost. Our team has run campaigns for global brands — now we bring that same horsepower to growing companies." data-es="Marketing de calidad de agencia a una fracción del costo. Nuestro equipo ha ejecutado campañas para marcas globales — ahora llevamos ese mismo nivel a empresas en crecimiento.">Agency-quality marketing at a fraction of the cost. Our team has run campaigns for global brands — now we bring that same horsepower to growing companies.</p>
+    <div class="svc-list">
+      <div class="svc-item" data-en="Influencer marketing across USA & LATAM" data-es="Marketing de influencers en USA & LATAM">Influencer marketing across USA & LATAM</div>
+      <div class="svc-item" data-en="Social media management" data-es="Gestión de redes sociales">Social media management</div>
+      <div class="svc-item" data-en="UGC and content production" data-es="UGC y producción de contenido">UGC and content production</div>
+      <div class="svc-item" data-en="LATAM market entry strategy" data-es="Estrategia de entrada al mercado LATAM">LATAM market entry strategy</div>
     </div>
-
-    <div class="agent-card featured">
-      <div class="agent-number">AGT-02</div>
-      <div class="agent-icon">📣</div>
-      <h3>Agente de Marketing</h3>
-      <p class="agent-desc">Encuentra influencers por nicho y métricas, genera listas filtradas, crea estrategias de contenido y redacta copies listos para publicar.</p>
-      <div class="agent-tags">
-        <span class="agent-tag">Búsqueda de influencers</span>
-        <span class="agent-tag">Estrategia de contenido</span>
-        <span class="agent-tag">Copywriting</span>
-        <span class="agent-tag">Análisis de métricas</span>
-      </div>
-      <div class="agent-metric">
-        <div class="agent-metric-num">100+</div>
-        <div class="agent-metric-lbl">influencers en 10 segundos</div>
-      </div>
-      <a href="https://marketing-agent-production-9fb3.up.railway.app" target="_blank" style="display:block;margin-top:20px;text-align:center;padding:10px;background:rgba(232,255,71,0.1);border:1px solid #e8ff47;color:#e8ff47;font-size:12px;text-decoration:none;border-radius:2px;font-family:'DM Mono',monospace;letter-spacing:0.1em;transition:all .2s" onmouseover="this.style.background='rgba(232,255,71,0.2)'" onmouseout="this.style.background='rgba(232,255,71,0.1)'">PROBAR EN VIVO →</a>
-    </div>
-
-    <div class="agent-card">
-      <div class="agent-number">AGT-03</div>
-      <div class="agent-icon">📊</div>
-      <h3>Agente de Presupuestos</h3>
-      <p class="agent-desc">Compara cotizaciones de múltiples proveedores, identifica el mejor precio por ítem y genera un reporte en Excel descargable con ahorro calculado.</p>
-      <div class="agent-tags">
-        <span class="agent-tag">Comparación de precios</span>
-        <span class="agent-tag">Optimización de compras</span>
-        <span class="agent-tag">Export a Excel</span>
-      </div>
-      <div class="agent-metric">
-        <div class="agent-metric-num">0</div>
-        <div class="agent-metric-lbl">errores de transcripción</div>
-      </div>
-      <a href="https://web-production-d8973.up.railway.app" target="_blank" style="display:block;margin-top:20px;text-align:center;padding:10px;border:1px solid rgba(232,255,71,0.3);color:#e8ff47;font-size:12px;text-decoration:none;border-radius:2px;font-family:'DM Mono',monospace;letter-spacing:0.1em;transition:all .2s" onmouseover="this.style.background='rgba(232,255,71,0.08)'" onmouseout="this.style.background='transparent'">PROBAR EN VIVO →</a>
-    </div>
-
+    <a href="#contact" class="svc-link" data-en="Get a custom proposal →" data-es="Obtener propuesta personalizada →">Get a custom proposal →</a>
   </div>
 
-  <!-- PAY PER USE -->
-  <div class="payperuse">
-    <div class="ppu-left">
-      <h3>¿Solo necesitas usarlo una vez?</h3>
-      <p>Paga por uso. Sin suscripción, sin compromisos. Accede al agente que necesitas y paga solo cuando lo usas.</p>
+  <div class="svc-block dark">
+    <div class="svc-label" data-en="AI technology" data-es="Tecnología AI">AI technology</div>
+    <h2 data-en="Proprietary<br><em>AI Agents</em>" data-es="Agentes AI<br><em>Propios</em>">Proprietary<br><em>AI Agents</em></h2>
+    <p data-en="We built our own AI tools that power our campaigns — and that you can use directly. On demand, at a fraction of what enterprise software charges." data-es="Construimos nuestras propias herramientas AI que potencian nuestras campañas — y que puedes usar directamente. Bajo demanda, a una fracción de lo que cobra el software empresarial.">We built our own AI tools that power our campaigns — and that you can use directly. On demand, at a fraction of what enterprise software charges.</p>
+    <div class="svc-list">
+      <div class="svc-item" data-en="Influencer search agent at $3.50 per search" data-es="Agente de búsqueda de influencers a $3.50 por búsqueda">Influencer search agent at $3.50 per search</div>
+      <div class="svc-item" data-en="Budget comparison agent at $1.50 per analysis" data-es="Agente de presupuestos a $1.50 por análisis">Budget comparison agent at $1.50 per analysis</div>
+      <div class="svc-item" data-en="Custom agent from $600" data-es="Agente personalizado desde $600">Custom agent from $600</div>
     </div>
-    <div class="ppu-items">
-      <div class="ppu-item">
-        <div class="ppu-price">$3.50</div>
-        <div class="ppu-name">Búsqueda influencers</div>
-      </div>
-      <div class="ppu-item">
-        <div class="ppu-price">$2.00</div>
-        <div class="ppu-name">Generación de copy</div>
-      </div>
-      <div class="ppu-item">
-        <div class="ppu-price">$1.50</div>
-        <div class="ppu-name">Cotización comparada</div>
-      </div>
-    </div>
+    <a href="https://marketing-agent-production-9fb3.up.railway.app" target="_blank" class="svc-link" data-en="Try the influencer agent live →" data-es="Probar el agente en vivo →">Try the influencer agent live →</a>
   </div>
-</section>
+</div>
 
-<!-- HOW IT WORKS -->
-<section class="how" id="como">
-  <div class="section-tag">El proceso</div>
-  <h2>EN PRODUCCIÓN<br>EN 48 HORAS</h2>
-  <p class="section-sub">Sin instalaciones. Sin configuraciones técnicas. Tu equipo lo usa desde el navegador desde el día 1.</p>
-  <div class="steps">
-    <div class="step">
-      <span class="step-num">01</span>
-      <h4>Nos describes el proceso</h4>
-      <p>Cuéntanos qué tarea quieres automatizar, qué información maneja y qué resultado esperas.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">02</span>
-      <h4>Diseñamos el agente</h4>
-      <p>Construimos las instrucciones especializadas que convierten la IA en un experto de tu industria.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">03</span>
-      <h4>Desarrollamos y desplegamos</h4>
-      <p>Programamos la aplicación, la conectamos con tus herramientas y la publicamos con tu marca.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">04</span>
-      <h4>Usas desde el día 1</h4>
-      <p>Acceso desde el navegador. Sin instalaciones. ROI positivo desde el primer uso.</p>
-    </div>
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="work-head">
+    <h2 data-en="Work that moved<br>the <em>needle.</em>" data-es="Trabajo que generó<br><em>resultados.</em>">Work that moved<br>the <em>needle.</em></h2>
+    <p data-en="Campaigns our team has led at top US agencies. Client details protected by NDA — results are real." data-es="Campañas que nuestro equipo ha liderado en agencias top de EE.UU. Detalles del cliente protegidos por NDA — los resultados son reales.">Campaigns our team has led at top US agencies. Client details protected by NDA — results are real.</p>
   </div>
-</section>
-
-<!-- PRICING -->
-<section class="pricing" id="precios">
-  <div class="section-tag">Inversión</div>
-  <h2>PRECIOS SIMPLES.<br>SIN SORPRESAS.</h2>
-  <p class="section-sub">Una tarifa de desarrollo por el agente y una mensualidad por mantenerlo funcionando, actualizado y disponible.</p>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-tier">Starter</div>
-      <div class="price-amount">$600</div>
-      <div class="price-period">desarrollo + $80/mes mantenimiento</div>
-      <ul class="price-features">
-        <li>1 agente especializado</li>
-        <li>Proceso simple o lineal</li>
-        <li>Interfaz web incluida</li>
-        <li>Soporte por WhatsApp</li>
-        <li>Updates mensuales</li>
-      </ul>
-      <a href="https://web-production-d8973.up.railway.app" target="_blank" class="btn-price-ghost">Abrir agente →</a>
+  <div class="cases">
+    <div class="case">
+      <div class="case-cat">Entertainment · USA</div>
+      <h3 data-en="Streaming platform launch" data-es="Lanzamiento plataforma streaming">Streaming platform launch</h3>
+      <p data-en="Influencer activation across Instagram and TikTok for a major streaming service. Full creator sourcing, contracting, and performance analysis." data-es="Activación de influencers en Instagram y TikTok para un servicio de streaming importante. Búsqueda de creadores, contratos y análisis de rendimiento.">Influencer activation across Instagram and TikTok for a major streaming service. Full creator sourcing, contracting, and performance analysis.</p>
+      <div class="case-big">40<em>+</em><small data-en="creators managed" data-es="creadores gestionados">creators managed</small></div>
     </div>
-    <div class="price-card featured-price">
-      <div class="price-tier">Professional</div>
-      <div class="price-amount">$1.500</div>
-      <div class="price-period">desarrollo + $150/mes mantenimiento</div>
-      <ul class="price-features">
-        <li>1 agente con integraciones</li>
-        <li>Conectado a tus herramientas</li>
-        <li>Exportación de reportes</li>
-        <li>Panel de administración</li>
-        <li>Soporte prioritario</li>
-      </ul>
-      <a href="https://marketing-agent-production-9fb3.up.railway.app" target="_blank" class="btn-price-primary">Abrir agente →</a>
+    <div class="case">
+      <div class="case-cat" data-en="Consumer Goods · USA" data-es="Bienes de Consumo · USA">Consumer Goods · USA</div>
+      <h3 data-en="Holiday influencer program" data-es="Programa navideño de influencers">Holiday influencer program</h3>
+      <p data-en="End-to-end holiday campaign for a globally recognized toy brand. Strategy, creator mix, paid amplification, and full-funnel reporting." data-es="Campaña navideña de punta a punta para una marca de juguetes reconocida globalmente. Estrategia, mezcla de creadores, amplificación pagada y reportes.">End-to-end holiday campaign for a globally recognized toy brand. Strategy, creator mix, paid amplification, and full-funnel reporting.</p>
+      <div class="case-big">3<em>x</em><small>ROAS</small></div>
     </div>
-    <div class="price-card">
-      <div class="price-tier">Enterprise</div>
-      <div class="price-amount">$4.500+</div>
-      <div class="price-period">desarrollo + mensualidad a medida</div>
-      <ul class="price-features">
-        <li>Suite completa de agentes</li>
-        <li>Integraciones avanzadas</li>
-        <li>Marca blanca disponible</li>
-        <li>SLA garantizado</li>
-        <li>Gerente de cuenta dedicado</li>
-      </ul>
-      <a href="#contacto" class="btn-price-ghost">Hablar con ventas</a>
+    <div class="case">
+      <div class="case-cat" data-en="Beauty · Colombia" data-es="Belleza · Colombia">Beauty · Colombia</div>
+      <h3 data-en="K-Beauty LATAM entry" data-es="Entrada K-Beauty a LATAM">K-Beauty LATAM entry</h3>
+      <p data-en="Market entry and influencer activation for Korean beauty brands launching in Colombia. Cultural strategy and local creator network." data-es="Entrada al mercado y activación de influencers para marcas de belleza coreanas lanzando en Colombia. Estrategia cultural y red de creadores locales.">Market entry and influencer activation for Korean beauty brands launching in Colombia. Cultural strategy and local creator network.</p>
+      <div class="case-big">15<em>+</em><small data-en="local creators" data-es="creadores locales">local creators</small></div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact" id="contacto">
-  <div class="contact-inner">
-    <div>
-      <div class="section-tag">Contacto</div>
-      <h2>AGENDA TU<br>DEMO GRATIS</h2>
-      <p class="contact-sub">En menos de 48 horas te decimos si podemos automatizar tu proceso, cuánto costaría y cuánto tiempo te ahorraría.</p>
-      <div class="contact-info">
-        <div class="contact-item">
-          <span>EMAIL</span>
-          <span>hola@novalyze.lat</span>
-        </div>
-        <div class="contact-item">
-          <span>RESP.</span>
-          <span>Menos de 48 horas</span>
-        </div>
-        <div class="contact-item">
-          <span>DEMO</span>
-          <span>Sin costo ni compromiso</span>
-        </div>
+<section class="contact" id="contact">
+  <div class="contact-in">
+    <div class="contact-l">
+      <h2 data-en="Ready to grow<br>your <em>brand?</em>" data-es="¿Listo para hacer<br>crecer tu <em>marca?</em>">Ready to grow<br>your <em>brand?</em></h2>
+      <p data-en="Tell us about your goals. We'll send a tailored proposal within 48 hours — no commitment, no templated pitch." data-es="Cuéntanos tus objetivos. Te enviamos una propuesta a medida en 48 horas — sin compromiso, sin pitch de plantilla.">Tell us about your goals. We'll send a tailored proposal within 48 hours — no commitment, no templated pitch.</p>
+      <div class="c-rows">
+        <div class="c-row"><span class="c-lbl">Email</span><span class="c-val">hola@novalyze.lat</span></div>
+        <div class="c-row"><span class="c-lbl" data-en="Response" data-es="Respuesta">Response</span><span class="c-val" data-en="Within 48 hours" data-es="En menos de 48 horas">Within 48 hours</span></div>
+        <div class="c-row"><span class="c-lbl" data-en="Markets" data-es="Mercados">Markets</span><span class="c-val">USA · Colombia · LATAM</span></div>
       </div>
     </div>
-    <form onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <input type="text" placeholder="Nombre" required>
-        <input type="text" placeholder="Empresa" required>
+    <form id="contactForm">
+      <div class="fr">
+        <input type="text" id="nombre" placeholder="Name" required>
+        <input type="text" id="empresa" placeholder="Company" required>
       </div>
-      <input type="email" placeholder="Email" required>
-      <select>
-        <option value="" disabled selected>¿Qué agente te interesa?</option>
-        <option>Agente de Arquitectura</option>
-        <option>Agente de Marketing</option>
-        <option>Agente de Presupuestos</option>
-        <option>Agente personalizado</option>
-        <option>No sé, quiero asesoría</option>
+      <input type="email" id="email" placeholder="Email" required>
+      <select id="servicio">
+        <option value="" disabled selected data-en="What are you looking for?" data-es="¿Qué buscas?">What are you looking for?</option>
+        <option data-en="Influencer Marketing" data-es="Marketing de Influencers">Influencer Marketing</option>
+        <option data-en="Social Media Management" data-es="Gestión de Redes Sociales">Social Media Management</option>
+        <option data-en="UGC Content" data-es="Contenido UGC">UGC Content</option>
+        <option data-en="LATAM Market Entry" data-es="Entrada al Mercado LATAM">LATAM Market Entry</option>
+        <option data-en="Custom AI Agent" data-es="Agente AI Personalizado">Custom AI Agent</option>
+        <option data-en="Not sure yet" data-es="Aún no sé">Not sure yet</option>
       </select>
-      <textarea placeholder="¿Qué proceso quieres automatizar?"></textarea>
-      <button type="submit" class="btn-submit">Enviar — agenda mi demo →</button>
+      <textarea id="mensaje" placeholder="Tell us about your brand..."></textarea>
+      <button type="submit" class="btn-sub" id="submitBtn" data-en="Send message →" data-es="Enviar mensaje →">Send message →</button>
     </form>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">NOVA<span>LYZE</span></div>
+  <div class="f-logo">Nova<em>lyze</em></div>
   <p>© 2026 Novalyze AI Solutions · novalyze.lat</p>
-  <p style="font-size:11px; color: #444;">Tecnología construida sobre Claude de Anthropic</p>
+  <nav class="f-nav">
+    <a href="#services" data-en="Services" data-es="Servicios">Services</a>
+    <a href="#work" data-en="Work" data-es="Trabajo">Work</a>
+    <a href="#contact" data-en="Contact" data-es="Contacto">Contact</a>
+  </nav>
 </footer>
 
+<div class="toast" id="toast">Message sent — we'll be in touch within 48h</div>
+
 <script>
-function handleSubmit(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('.btn-submit');
-  btn.textContent = '✓ Mensaje enviado — te contactamos en 48h';
-  btn.style.background = '#1a1a1a';
-  btn.style.color = '#e8ff47';
-  btn.style.border = '1px solid #e8ff47';
+let lang='en';
+function toggleLang(){
+  lang=lang==='en'?'es':'en';
+  document.getElementById('langBtn').innerHTML=lang==='en'
+    ?'<span class="on">EN</span> / ES'
+    :'EN / <span class="on">ES</span>';
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    const v=el.getAttribute('data-'+lang);
+    if(!v)return;
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){el.placeholder=v;}
+    else if(el.tagName==='OPTION'){el.textContent=v;}
+    else if(v.includes('<')){el.innerHTML=v;}
+    else{el.textContent=v;}
+  });
+  document.getElementById('toast').textContent=lang==='en'
+    ?"Message sent — we'll be in touch within 48h"
+    :'Mensaje enviado — te contactamos en 48h';
+  document.documentElement.lang=lang;
 }
 
-// Smooth reveal on scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.1 });
+document.getElementById('contactForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  const orig=btn.textContent;
+  btn.textContent=lang==='en'?'Sending...':'Enviando...';
+  btn.disabled=true;
+  try{
+    const r=await fetch('https://api.resend.com/emails',{
+      method:'POST',
+      headers:{'Authorization':'Bearer re_hZKQuEWv_ABqAPuzLFPLSPGTZrDA8BTAQ','Content-Type':'application/json'},
+      body:JSON.stringify({
+        from:'Novalyze <hola@novalyze.lat>',
+        to:['smproyectos3@gmail.com'],
+        subject:'New contact from novalyze.lat',
+        html:`<h2>New contact</h2><p><b>Name:</b> ${document.getElementById('nombre').value}</p><p><b>Company:</b> ${document.getElementById('empresa').value}</p><p><b>Email:</b> ${document.getElementById('email').value}</p><p><b>Looking for:</b> ${document.getElementById('servicio').value}</p><p><b>Message:</b> ${document.getElementById('mensaje').value}</p>`
+      })
+    });
+    if(r.ok){
+      const t=document.getElementById('toast');
+      t.style.display='block';
+      setTimeout(()=>t.style.display='none',4000);
+      e.target.reset();
+    }else{alert('Error — write us at hola@novalyze.lat');}
+  }catch{alert('Error — write us at hola@novalyze.lat');}
+  btn.textContent=orig;btn.disabled=false;
+});
 
-document.querySelectorAll('.agent-card, .step, .price-card, .stat').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity .5s ease, transform .5s ease';
-  observer.observe(el);
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}
+  });
+},{threshold:0.07});
+document.querySelectorAll('.svc-block,.num-item,.case,.contact-l,form').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(14px)';
+  el.style.transition='opacity .4s ease,transform .4s ease';
+  obs.observe(el);
 });
 </script>
 </body>
