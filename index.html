@@ -344,16 +344,17 @@ document.getElementById('contactForm').addEventListener('submit',async function(
   const orig=btn.textContent;
   btn.textContent=lang==='en'?'Sending...':'Enviando...';
   btn.disabled=true;
+  const data=new FormData();
+  data.append('name',document.getElementById('nombre').value);
+  data.append('company',document.getElementById('empresa').value);
+  data.append('email',document.getElementById('email').value);
+  data.append('service',document.getElementById('servicio').value);
+  data.append('message',document.getElementById('mensaje').value);
   try{
-    const r=await fetch('https://api.resend.com/emails',{
+    const r=await fetch('https://formspree.io/f/mvznqjbq',{
       method:'POST',
-      headers:{'Authorization':'Bearer re_hZKQuEWv_ABqAPuzLFPLSPGTZrDA8BTAQ','Content-Type':'application/json'},
-      body:JSON.stringify({
-        from:'Novalyze <hola@novalyze.lat>',
-        to:['smproyectos3@gmail.com'],
-        subject:'New contact from novalyze.lat',
-        html:`<h2>New contact</h2><p><b>Name:</b> ${document.getElementById('nombre').value}</p><p><b>Company:</b> ${document.getElementById('empresa').value}</p><p><b>Email:</b> ${document.getElementById('email').value}</p><p><b>Looking for:</b> ${document.getElementById('servicio').value}</p><p><b>Message:</b> ${document.getElementById('mensaje').value}</p>`
-      })
+      body:data,
+      headers:{'Accept':'application/json'}
     });
     if(r.ok){
       const t=document.getElementById('toast');
